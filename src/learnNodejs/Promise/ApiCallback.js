@@ -13,11 +13,29 @@ class Api {
         return user;
     }
 
+    getUserPromise(username) {
+        return new Promise((resolve, reject) => {
+            this.getUser(username, function(err, user) {
+                if (err) return reject(err);
+                resolve(user);
+            });
+        });
+    }
+
     getPostsOfUser(user, callback) {
         var err = null;
         var posts = user.getPosts();
         if (callback) callback(err, posts);
         return posts;
+    }
+
+    getPostsOfUserPromise(user) {
+        return new Promise((resolve, reject) => {
+            this.getPostsOfUser(user, function(err, posts) {
+                if (err) return reject(err);
+                resolve(posts);
+            });
+        });
     }
 
     getCommentsOfPosts(posts, callback) {
@@ -28,6 +46,15 @@ class Api {
         });
         if (callback) callback(err, comments);
         return comments;
+    }
+
+    getCommentsOfPostsPromise(posts) {
+        return new Promise((resolve, reject) => {
+            this.getCommentsOfPosts(posts, function(err, comments) {
+                if (err) return reject(err);
+                resolve(comments);
+            });
+        });
     }
 }
 

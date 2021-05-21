@@ -2,8 +2,7 @@
  * Syntax
  *   node samplePromise.js
  */
- const { resolve } = require('path/posix');
-const Api = require('./ApiPromise');
+const Api = require('./ApiCallback');
 
 const api = new Api();
 
@@ -15,20 +14,20 @@ function onError(err) {
     console.error('Error: ' + (err.stack || err));
 }
 
-api.getUser('thanh').then(onSuccessUser, onError);
+api.getUserPromise('thanh').then(onSuccessUser, onError);
 
-api.getUser('thanherror').then(onSuccessUser, onError);
+api.getUserPromise('thanherror').then(onSuccessUser, onError);
 
-api.getUser('thanh_2')
+api.getUserPromise('thanh_2')
     .then(user => {
         onSuccessUser(user);
-        return api.getPostsOfUser(user);
+        return api.getPostsOfUserPromise(user);
     })
     .then(posts => {
         posts.forEach(function(post, index) {
             console.log('Post log: ' + post.getContent());
         });
-        return api.getCommentsOfPosts(posts);
+        return api.getCommentsOfPostsPromise(posts);
     })
     .then(comments => {
         comments.forEach(function(comment, index) {
@@ -37,6 +36,6 @@ api.getUser('thanh_2')
     })
     .catch(err => onError(err));
 
-api.getUser('thanh_2error')
+api.getUserPromise('thanh_2error')
     .then(user => onSuccessUser(user))
     .catch(err => onError(err));

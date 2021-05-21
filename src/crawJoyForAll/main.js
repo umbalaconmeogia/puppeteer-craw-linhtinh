@@ -14,7 +14,20 @@ const PUPPETEER_OPTIONS = {
 };
 
 const getTextContent = async (page) => {
-    return 'AAAA';
+    var title = 'aaa';
+    var content = 'bbb';
+
+    await page.evaluate((title, content) => {
+        // Get .main .box
+        var textBlock = document.querySelector('.main').querySelector('.box');
+        // Get h2 as title
+        title = textBlock.querySelector('h2').innerHTML;
+        // Get all left as text.
+        // Return object {title, content}
+    }, title, content);
+    console.log("Outside: " + title);
+    var text = 'AAA';
+    return text;
 };
 
 /**
@@ -30,9 +43,10 @@ const loadAndSave = async (browser, index) => {
     await page.goto(url);
     await page.waitForSelector('body');
 
-    getTextContent(page).then(text => fs.writeFileSync(saveFile, text));
+    await getTextContent(page)
+        .then(text => console.log(text));
 
-    page.close();
+    // page.close();
 };
 
 /**
@@ -46,6 +60,7 @@ const load17Items = async (browser) => {
 
     for (let i = 1; i <= 17; i++) {
         await loadAndSave(browser, i);
+        break;
     }
 };
 
@@ -60,7 +75,7 @@ const run = async () => {
 
         await load17Items(browser);
 
-        browser.close();
+        // browser.close();
     } catch (error) {
         console.log(error);
     }

@@ -2,7 +2,7 @@
  * Syntax
  *   node sampleCallback.js
  */
-const Api = require('./ApiCallback');
+const Api = require('../modules/Api');
 
 const api = new Api();
 

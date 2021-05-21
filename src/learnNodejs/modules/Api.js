@@ -1,4 +1,4 @@
-var User = require('../modules/User');
+var User = require('./User');
 
 class Api {
     getUser(username, callback) {

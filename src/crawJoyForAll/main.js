@@ -50,8 +50,14 @@ const getAndSaveContent = async (browser, index) => {
 const load17Items = async (browser) => {
     // Create array of integer from 1..17
     var array17 = Array(17).fill().map((x, i) => i + 1); // Another way is array17 = Array.from(Array(17), (x, i) => i + 1);
+
     // Open html files to get content and save asynchronously.
-    await Promise.all(array17.map((number) => getAndSaveContent(browser, number)));
+    await Promise.all(array17.map(number => getAndSaveContent(browser, number)));
+
+    // For comparing: Run crawling synchronously.
+    // for (let number = 1; number <= 17; number++) {
+    //     await getAndSaveContent(browser, number)
+    // }
 };
 
 /**

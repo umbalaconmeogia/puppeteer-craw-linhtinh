@@ -1,6 +1,4 @@
 /**
- * TODO: Run crawling pages asynchronously.
- *
  * Syntax:
  *   node main.js
  */
@@ -14,20 +12,14 @@ const PUPPETEER_OPTIONS = {
 };
 
 const getTextContent = async (page) => {
-    var title = 'aaa';
-    var content = 'bbb';
-
-    await page.evaluate((title, content) => {
+    var text = await page.evaluate(() => {
         // Get .main .box
         var textBlock = document.querySelector('.main').querySelector('.box');
-        // Get h2 as title
-        title = textBlock.querySelector('h2').innerHTML;
-        // Get all left as text.
-        // Return object {title, content}
-    }, title, content);
-    console.log("Outside: " + title);
-    var text = 'AAA';
-    return text;
+        var text = textBlock.textContent;
+
+        return text;
+    });
+    return text.trim();
 };
 
 /**
@@ -35,18 +27,20 @@ const getTextContent = async (page) => {
  * @param {puppeteer.Browser} browser
  * @param {int} index
  */
-const loadAndSave = async (browser, index) => {
+const getAndSaveContent = async (browser, index) => {
     const url = `http://workprint.biz/bungo_ohno_rinrihoujinkai/${index}.html`;
     const saveFile = `download/${index}.txt`;
 
     var page = await browser.newPage();
     await page.goto(url);
-    await page.waitForSelector('body');
 
-    await getTextContent(page)
-        .then(text => console.log(text));
+    var text = await getTextContent(page);
+    await page.close();
 
-    // page.close();
+    // Write content to file asynchronously.
+    fs.writeFile(saveFile, text, (err, data) => {
+         if (err) throw new Error(err);
+    });
 };
 
 /**
@@ -55,13 +49,9 @@ const loadAndSave = async (browser, index) => {
  */
 const load17Items = async (browser) => {
     // Create array of integer from 1..17
-    // var array17 = Array(17).fill().map((x, i) => i + 1);
-    // array17 = Array.from(Array(17), (x, i) => i + 1);
-
-    for (let i = 1; i <= 17; i++) {
-        await loadAndSave(browser, i);
-        break;
-    }
+    var array17 = Array(17).fill().map((x, i) => i + 1); // Another way is array17 = Array.from(Array(17), (x, i) => i + 1);
+    // Open html files to get content and save asynchronously.
+    await Promise.all(array17.map((number) => getAndSaveContent(browser, number)));
 };
 
 /**
@@ -75,7 +65,7 @@ const run = async () => {
 
         await load17Items(browser);
 
-        // browser.close();
+        browser.close();
     } catch (error) {
         console.log(error);
     }

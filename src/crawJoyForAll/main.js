@@ -6,7 +6,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 const PUPPETEER_OPTIONS = {
-    headless: false,
+    headless: true,
     args: [
     ],
 };

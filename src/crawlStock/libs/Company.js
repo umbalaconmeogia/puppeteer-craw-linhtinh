@@ -1,4 +1,7 @@
 class Company {
+    static MARKET_CODE_TOKYO1 = 'T1';
+    static MARKET_CODE_TOKYO2 = 'T2';
+    static MARKET_CODE_MOTHERS = 'M';
 
     /**
      * type {string}

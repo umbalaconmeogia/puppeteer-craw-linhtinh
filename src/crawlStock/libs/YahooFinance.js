@@ -37,16 +37,13 @@ class YahooFinance {
      * Close browser.
      */
     async closeBrowser() {
-        // await this.browser.close();
+        await this.browser.close();
     }
 
     async crawl() {
         await this.crawlFundamental();
     }
 
-    async crawlFundamentalTable(classTitle) {
-
-    }
     /**
      * 会社のファンダメンタル情報を取得して、このオブジェクトの変数に保管する。
      */
@@ -88,9 +85,7 @@ class YahooFinance {
 
         Object.assign(this.company, crawled);
 
-        console.log(this.company);
-
-        // await page.close();
+        await page.close();
     }
 }
 

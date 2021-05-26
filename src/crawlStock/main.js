@@ -32,6 +32,7 @@ const run = async (stockCode) => {
         await yahoo.crawl();
 
         await yahoo.closeBrowser();
+        console.log(JSON.stringify(yahoo.company));
     } catch (error) {
         console.log(error);
     }

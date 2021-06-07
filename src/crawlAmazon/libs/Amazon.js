@@ -47,9 +47,11 @@ class Amazon {
         await page.waitForSelector('#productDetails_techSpec_section_1');
 
         const crawled = await page.evaluate(() => {
-            const prodDetails = document.querySelector('#productDetails_techSpec_section_1');
-            const value = prodDetails.textContent;
-            return value;
+            let prodDetails = document.querySelector('#productDetails_techSpec_section_1');
+            let table1 = prodDetails.textContent;
+            prodDetails = document.querySelector('#productDetails_detailBullets_sections1');
+            let table2 = prodDetails.textContent;
+            return table1 + table2;
         });
         console.log(crawled);
 
